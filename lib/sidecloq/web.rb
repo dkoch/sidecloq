@@ -27,5 +27,9 @@ end
 
 Sidekiq::Web.locales << Sidecloq::Web::LOCALES
 
-Sidekiq::Web.register(Sidecloq::Web)
-Sidekiq::Web.tabs['Recurring'] = 'recurring'
+if Sidekiq::VERSION[0].to_i >= 8
+  Sidekiq::Web.configure { |cfg| cfg.register(Sidecloq::Web, name: "sidecloq", tab: "Recurring", index: "recurring") }
+else
+  Sidekiq::Web.register(Sidecloq::Web)
+  Sidekiq::Web.tabs['Recurring'] = 'recurring'
+end
